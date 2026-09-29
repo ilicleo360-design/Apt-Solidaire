@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Apt Solidaire — Guide local</title>
+<style>
+:root{--ink:#17221f;--muted:#65716d;--bg:#f5f7f4;--card:#fff;--line:#dfe6e1;--accent:#176b57;--accent2:#e7f2ed;--danger:#9b302c;--shadow:0 10px 30px rgba(23,34,31,.08)}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;color:var(--ink);background:var(--bg);line-height:1.5}a{color:inherit}
+.container{width:min(1120px,92%);margin:auto}.hero{background:linear-gradient(135deg,#eaf4ef,#fff);padding:28px 0 46px;border-bottom:1px solid var(--line)}
+.nav{display:flex;justify-content:space-between;align-items:center;gap:15px}.brand{font-weight:900;letter-spacing:.2px;font-size:1.15rem}.badge{font-size:.78rem;padding:6px 10px;border-radius:999px;background:#fff;border:1px solid var(--line)}
+h1{font-size:clamp(2.1rem,6vw,4.4rem);line-height:1;margin:48px 0 16px;max-width:800px}h2{font-size:clamp(1.5rem,3vw,2.2rem);margin:0 0 10px}h3{margin:0 0 7px}.lead{font-size:1.08rem;color:var(--muted);max-width:720px}
+.search{display:flex;gap:10px;margin-top:26px}.search input{flex:1;padding:15px 17px;border:1px solid var(--line);border-radius:14px;font-size:1rem;background:#fff}.btn{display:inline-flex;align-items:center;justify-content:center;padding:12px 15px;border-radius:12px;border:0;background:var(--accent);color:#fff;text-decoration:none;font-weight:800;cursor:pointer}.btn.secondary{background:#fff;color:var(--accent);border:1px solid var(--line)}
+section{padding:48px 0}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:20px;box-shadow:var(--shadow)}.cat{cursor:pointer;transition:.15s}.cat:hover{transform:translateY(-2px)}.emoji{font-size:1.7rem}.muted{color:var(--muted)}.small{font-size:.88rem}.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:15px}.resource{display:flex;flex-direction:column;gap:4px}.tag{display:inline-block;width:max-content;background:var(--accent2);color:var(--accent);padding:4px 8px;border-radius:999px;font-size:.75rem;font-weight:800}.urgent{background:#fff1ef;border:1px solid #f0c9c5}.urgent .btn{background:var(--danger)}
+.path{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}.choice{min-height:120px;display:flex;flex-direction:column;justify-content:center;cursor:pointer}.choice strong{font-size:1.1rem}.notice{padding:15px;border-radius:14px;background:#f0f4f1;border:1px solid var(--line);margin-top:14px}.map{height:360px;border-radius:20px;background:linear-gradient(145deg,#dfeee7,#eef3ee);position:relative;overflow:hidden;border:1px solid var(--line)}.map:before{content:"";position:absolute;inset:25px;background:repeating-linear-gradient(25deg,transparent 0 45px,rgba(255,255,255,.8) 46px 49px),repeating-linear-gradient(105deg,transparent 0 70px,rgba(255,255,255,.65) 71px 74px);transform:rotate(-8deg)}.pin{position:absolute;padding:8px 10px;border-radius:999px;background:#fff;border:2px solid var(--accent);font-size:.78rem;font-weight:800;box-shadow:var(--shadow);z-index:2}.p1{left:18%;top:30%}.p2{left:55%;top:18%}.p3{left:67%;top:60%}.p4{left:34%;top:70%}.p5{left:78%;top:35%}.footer{padding:35px 0 55px;color:var(--muted);font-size:.9rem}.hidden{display:none!important}.source{font-size:.78rem;color:var(--muted);margin-top:12px}
+@media(max-width:760px){.grid,.path{grid-template-columns:1fr}.search{flex-direction:column}.hero{padding-bottom:30px}.map{height:300px}}
+</style>
+</head>
+<body>
+<header class="hero">
+<div class="container">
+  <nav class="nav"><div class="brand">🌿 Apt Solidaire</div><span class="badge">Projet ST2S • prototype</span></nav>
+  <h1>Je ne sais pas où aller.<br><span style="color:var(--accent)">Je sais maintenant par où commencer.</span></h1>
+  <p class="lead">Un guide numérique local pour trouver plus facilement les ressources sociales, de santé, d’hébergement et de solidarité à Apt.</p>
+  <div class="search"><input id="search" placeholder="Rechercher : douche, manger, logement, droits…"><button class="btn" onclick="searchResources()">Rechercher</button></div>
+</div>
+</header>
+
+<main>
+<section>
+<div class="container">
+<h2>De quoi avez-vous besoin ?</h2><p class="muted">Choisissez une porte d’entrée. Le site affiche ensuite les ressources correspondantes.</p>
+<div class="grid" id="cats">
+<div class="card cat" data-cat="logement" onclick="filter('logement')"><div class="emoji">🏠</div><h3>Logement</h3><p class="muted">Hébergement, logement social, orientation.</p></div>
+<div class="card cat" data-cat="hygiene" onclick="filter('hygiene')"><div class="emoji">🚿</div><h3>Hygiène</h3><p class="muted">Douches, lessive, accueil de jour.</p></div>
+<div class="card cat" data-cat="alimentation" onclick="filter('alimentation')"><div class="emoji">🍎</div><h3>Alimentation</h3><p class="muted">Aide alimentaire et épicerie solidaire.</p></div>
+<div class="card cat" data-cat="sante" onclick="filter('sante')"><div class="emoji">🏥</div><h3>Santé</h3><p class="muted">Soins et orientation vers les services adaptés.</p></div>
+<div class="card cat" data-cat="droits" onclick="filter('droits')"><div class="emoji">📄</div><h3>Droits & démarches</h3><p class="muted">CCAS, démarches sociales et accompagnement.</p></div>
+<div class="card cat" data-cat="solidarite" onclick="filter('solidarite')"><div class="emoji">🤝</div><h3>Solidarité</h3><p class="muted">Associations et accompagnement de proximité.</p></div>
+</div>
+</div>
+</section>
+
+<section>
+<div class="container">
+<div class="card urgent">
+<h2>🚨 Besoin urgent ?</h2>
+<p>Pour une demande d’hébergement d’urgence, le <strong>115</strong> est le numéro d’urgence hébergement. Pour une urgence médicale, composez le <strong>15</strong>.</p>
+<div class="actions"><a class="btn" href="tel:115">📞 Appeler le 115</a><a class="btn" href="tel:15">📞 Appeler le 15</a></div>
+<p class="source">Numéros à utiliser selon la situation. En cas de danger immédiat, contactez les services d’urgence.</p>
+</div>
+</div>
+</section>
+
+<section id="results">
+<div class="container">
+<h2>Ressources locales</h2><p class="muted" id="count"></p>
+<div class="grid" id="resources"></div>
+</div>
+</section>
+
+<section>
+<div class="container">
+<h2>🗺️ Où trouver les ressources ?</h2>
+<p class="muted">Carte indicative du prototype. La version publiée devra utiliser une carte interactive et des adresses vérifiées.</p>
+<div class="map">
+<span class="pin p1">CCAS</span><span class="pin p2">HAPA</span><span class="pin p3">Restos du Cœur</span><span class="pin p4">Croix-Rouge</span><span class="pin p5">Hôpital</span>
+</div>
+</div>
+</section>
+
+<section>
+<div class="container">
+<h2>🎓 Notre démarche ST2S</h2>
+<div class="path">
+<div class="card"><span class="tag">01 • Constater</span><h3>Identifier un besoin local</h3><p class="muted">Repérer les difficultés d’accès à l’information et aux ressources sociales.</p></div>
+<div class="card"><span class="tag">02 • Rechercher</span><h3>Recenser les ressources</h3><p class="muted">Croiser des sources institutionnelles et associatives locales.</p></div>
+<div class="card"><span class="tag">03 • Construire</span><h3>Créer un outil</h3><p class="muted">Organiser les informations selon les besoins de la personne.</p></div>
+<div class="card"><span class="tag">04 • Vérifier</span><h3>Tester & améliorer</h3><p class="muted">Vérifier les informations auprès des structures compétentes et améliorer l’orientation.</p></div>
+</div>
+<div class="notice"><strong>Principe :</strong> le site oriente vers des professionnels et structures compétentes. Il ne remplace pas un accompagnement social ou médical.</div>
+</div>
+</section>
+</main>
+
+<footer class="footer">
+<div class="container">
+<strong>Apt Solidaire</strong> — projet scolaire ST2S.<br>
+Informations recueillies à partir de sources institutionnelles ; horaires et conditions d’accueil à vérifier avant déplacement.<br>
+Dernière vérification documentaire : septembre 2026.
+</div>
+</footer>
+
+<script>
+const data=[
+{name:"H.A.P.A.",cats:["logement","solidarite"],desc:"Hébergement de personnes sans-abris & Recyclerie.",address:"479 avenue de Roumanille, 84400 Apt",phone:"04 90 71 90 01",email:"hebergement.apt@gmail.com",source:"Ville d’Apt"},
+{name:"CCAS d’Apt",cats:["droits","logement","solidarite"],desc:"Information, accompagnement social, accès aux droits et démarches.",address:"29 place Carnot, 84400 Apt",phone:"04 90 04 36 60",email:"ccas@apt.fr",source:"Ville d’Apt"},
+{name:"L’Oasis — accueil de jour",cats:["hygiene","alimentation","solidarite"],desc:"Accueil de jour avec petit-déjeuner, douches, lessives et bagagerie.",address:"188 avenue Victor Hugo, 84400 Apt",phone:"115",source:"SIAO Vaucluse"},
+{name:"Les Restos du Cœur",cats:["alimentation","solidarite"],desc:"Acteur local d’aide alimentaire référencé par le CCAS.",address:"148 traverse de Roumanille, 84400 Apt",phone:"04 90 74 08 44",source:"Ville d’Apt"},
+{name:"Épicerie solidaire Eco Panier",cats:["alimentation","solidarite"],desc:"Épicerie solidaire référencée par le CCAS d’Apt.",address:"405 avenue Victor Hugo, 84400 Apt",phone:"04 90 04 88 80",source:"Ville d’Apt"},
+{name:"Croix-Rouge française — Unité locale d’Apt",cats:["solidarite","alimentation"],desc:"Acteur associatif local référencé par le CCAS.",address:"76–86 avenue Philippe de Girard, 84400 Apt",phone:"04 32 52 13 60",source:"Ville d’Apt"},
+{name:"Centre Hospitalier du Pays d’Apt",cats:["sante"],desc:"Établissement de santé d’Apt ; orientation médicale selon la situation.",address:"Avenue de Marseille, 84400 Apt",phone:"04 90 04 33 00",source:"Centre Hospitalier / Ville d’Apt"},
+{name:"EDeS d’Apt",cats:["droits","sante","solidarite"],desc:"Espace départemental des solidarités référencé par le CCAS.",address:"123 avenue de Lançon, 84400 Apt",phone:"04 90 74 76 00",source:"Ville d’Apt"},
+{name:"APAS — Maison Bonhomme",cats:["solidarite","droits"],desc:"Centre social local référencé parmi les acteurs du territoire.",address:"455 avenue de Verdun, 84400 Apt",phone:"04 90 04 80 80",source:"Ville d’Apt"}
+];
+let active=null;
+function render(list=data){
+const box=document.getElementById("resources");box.innerHTML="";
+list.forEach(r=>{box.innerHTML+=`<article class="card resource"><span class="tag">${r.cats[0]}</span><h3>${r.name}</h3><p>${r.desc}</p><div class="small">📍 ${r.address}</div>${r.phone?`<div class="small">📞 ${r.phone}</div>`:""}<div class="actions">${r.phone&&/^0/.test(r.phone)?`<a class="btn secondary" href="tel:${r.phone.replaceAll(" ","")}">Appeler</a>`:""}<a class="btn secondary" target="_blank" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(r.address)}">Itinéraire</a></div><div class="source">Source : ${r.source}</div></article>`});
+document.getElementById("count").textContent=list.length+" ressource(s) affichée(s).";
+}
+function filter(cat){active=cat;render(data.filter(r=>r.cats.includes(cat)));document.getElementById("results").scrollIntoView({behavior:"smooth"})}
+function searchResources(){const q=document.getElementById("search").value.toLowerCase().trim();if(!q){render();return}render(data.filter(r=>(r.name+" "+r.desc+" "+r.address+" "+r.cats.join(" ")).toLowerCase().includes(q)));document.getElementById("results").scrollIntoView({behavior:"smooth"})}
+render();
+</script>
+</body>
+</html>
